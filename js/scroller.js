@@ -1,10 +1,13 @@
 // NOT MY CODE //
 /**
- * scroller - handles the details
- * of figuring out which section
- * the user is currently scrolled
- * to.
- *
+ * @description Sets up an event listener to monitor scrolling of a selection of
+ * elements and positions those sections relative to the top of the first section,
+ * calling the `position` function when scrolling occurs. It also dispatches events
+ * 'active' and 'progress' with appropriate parameters based on the position of the
+ * user.
+ * 
+ * @returns { any } an instance of a scrollable container that monitors scrolling and
+ * updates the position of sections based on user input.
  */
 function scroller() {
   var container = d3.select('body');
@@ -25,13 +28,13 @@ function scroller() {
   var containerStart = 0;
 
   /**
-   * scroll - constructor function.
-   * Sets up scroller to monitor
-   * scrolling of els selection.
-   *
-   * @param els - d3 selection of
-   *  elements that will be scrolled
-   *  through by user.
+   * @description Creates event listeners on the window to detect both scroll and resize
+   * events, calling the `position` and `resize` functions accordingly. It also sets
+   * up a timer to automatically call `position` once on load and stops it after execution.
+   * 
+   * @param { array } els - elements that will be used to implement the scroller
+   * functionality, and is used to initialize the scroll position and resize the scroller
+   * accordingly.
    */
   function scroll(els) {
     sections = els;
@@ -55,6 +58,9 @@ function scroller() {
     // @v4 timer no longer stops if you
     // return true at the end of the callback
     // function - so here we stop it explicitly.
+    /**
+     * @description Positions the mouse cursor and stops a timer.
+     */
     var timer = d3.timer(function () {
       position();
       timer.stop();
@@ -62,10 +68,9 @@ function scroller() {
   }
 
   /**
-   * resize - called initially and
-   * also when page is resized.
-   * Resets the sectionPositions
-   *
+   * @description Calculates the position of each section relative to the top of the
+   * first section, then stores these positions in an array. Finally, it sets a variable
+   * `containerStart` to the top of the container node plus the window's page Y offset.
    */
   function resize() {
     // sectionPositions will be each sections
@@ -84,11 +89,8 @@ function scroller() {
   }
 
   /**
-   * position - get current users position.
-   * if user has scrolled to new section,
-   * dispatch active event with new section
-   * index.
-   *
+   * @description Calculates the index of the currently displayed section based on its
+   * position and updates the active and progress event listeners.
    */
   function position() {
     var pos = window.pageYOffset - 10 - containerStart;
